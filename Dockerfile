@@ -1,7 +1,11 @@
-FROM alpine:3.11.3
+FROM ben181231/alpine:3.11_glibc-2.31
 
 ARG CADDY_VERSION=2.0.0
+ARG DENO_VERSION=1.0.0
 ARG GRPCURL_VERSION=1.4.0
+
+ENV DENO_INSTALL=/run/deno
+ENV PATH=${DENO_INSTALL}/bin:${PATH}
 
 RUN \
   apk add \
@@ -13,7 +17,6 @@ RUN \
 RUN \
   mkdir -p /tmp/installing && \
   cd /tmp/installing && \
-  \
   curl -L -o grpcurl.tar.gz \
   "https://github.com/fullstorydev/grpcurl/releases/download/v${GRPCURL_VERSION}/grpcurl_${GRPCURL_VERSION}_linux_x86_64.tar.gz" && \
   tar xzf grpcurl.tar.gz && \
@@ -23,6 +26,12 @@ RUN \
   "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_amd64.tar.gz" && \
   tar xzf caddy.tar.gz && \
   mv caddy /usr/bin && \
+  \
+  curl -L -o deno.zip \
+  "https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip" && \
+  unzip deno.zip && \
+  mkdir -p "${DENO_INSTALL}/bin" && \
+  mv deno "${DENO_INSTALL}/bin" && \
   \
   cd / && \
   rm -rf /tmp/installing
