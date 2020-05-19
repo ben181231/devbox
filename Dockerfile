@@ -1,5 +1,6 @@
 FROM alpine:3.11.3
 
+ARG CADDY_VERSION=2.0.0
 ARG GRPCURL_VERSION=1.4.0
 
 RUN \
@@ -18,9 +19,9 @@ RUN \
   tar xzf grpcurl.tar.gz && \
   mv grpcurl /usr/bin && \
   \
-  curl -L -o caddy \
-  "https://github.com/caddyserver/caddy/releases/download/v2.0.0-beta.15/caddy2_beta15_linux_arm64" && \
-  chmod +x caddy && \
+  curl -L -o caddy.tar.gz \
+  "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_amd64.tar.gz" && \
+  tar xzf caddy.tar.gz && \
   mv caddy /usr/bin && \
   \
   cd / && \
