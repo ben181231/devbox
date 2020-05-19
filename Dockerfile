@@ -4,8 +4,10 @@ ARG CADDY_VERSION=2.0.0
 ARG DENO_VERSION=1.0.0
 ARG GRPCURL_VERSION=1.4.0
 
-ENV DENO_INSTALL=/run/deno
-ENV PATH=${DENO_INSTALL}/bin:${PATH}
+ENV DENO_DIR=/run/deno
+ENV DENO_INSTALL_ROOT=${DENO_DIR}/bin
+
+ENV PATH=${DENO_INSTALL_ROOT}:${PATH}
 
 RUN \
   apk add \
@@ -30,8 +32,8 @@ RUN \
   curl -L -o deno.zip \
   "https://github.com/denoland/deno/releases/download/v${DENO_VERSION}/deno-x86_64-unknown-linux-gnu.zip" && \
   unzip deno.zip && \
-  mkdir -p "${DENO_INSTALL}/bin" && \
-  mv deno "${DENO_INSTALL}/bin" && \
+  mkdir -p "${DENO_DIR}/bin" && \
+  mv deno "${DENO_DIR}/bin" && \
   \
   cd / && \
   rm -rf /tmp/installing
